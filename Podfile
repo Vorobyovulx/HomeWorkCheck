@@ -10,5 +10,6 @@ target 'AppForVK' do
   pod 'SwiftyJSON', '~> 4.2'
   pod 'Kingfisher', '~> 5.1'
   pod 'RealmSwift', '~> 3.20'
+  pod 'PromiseKit', '~> 6.13.1'
 #  pod 'Texture', '~> 2.8'
 end

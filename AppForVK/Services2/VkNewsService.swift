@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import PromiseKit
 
 class VkNewsService {
     let baseUrl = "https://api.vk.com"
@@ -69,5 +70,38 @@ class VkNewsService {
         }
     }
     
+    func loadVkNewsFeedPromise() -> Promise<VkNews> {
+        let path = "/method/newsfeed.get"
+        
+        let parameters: Parameters = [
+            "filters": "post,photo",
+        
+            "count": 30,
+            "access_token": Session.shared.token,
+            "v": versionAPI
+        ]
+        
+        let url = baseUrl + path
+        
+        return Promise { resolver in
+        VkNewsService.sharedManager
+            .request(url, method: .get, parameters: parameters)
+            .responseJSON(queue: .global(qos: .userInteractive)) { response in
+                switch response.result {
+                case let .success(value):
+                    let json = JSON(value)
+                    
+                    let news = json["response"]["items"].arrayValue.map { News(json: $0) }
+                    let profiles = json["response"]["profiles"].arrayValue.map { Owner(json: $0) }
+                    let groups = json["response"]["groups"].arrayValue.map { Owner(json: $0) }
+            
+                    resolver.fulfill(VkNews(items: news, profiles: profiles, groups: groups))
+                    
+                case let .failure(error):
+                    resolver.reject(error)
+                }
+            }
+        }
+    }
     
 }

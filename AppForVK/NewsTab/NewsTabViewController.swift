@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import PromiseKit
 
 class NewsTabViewController: UIViewController {
 
@@ -20,18 +21,30 @@ class NewsTabViewController: UIViewController {
         super.viewDidLoad()
         configureTableView()
         
-        newsService.loadVkNewsFeed(
-            completion: { [weak self] news, error in
-                guard let _ = error else {
-                    print(news?.items.count)
-                    self?.vkNews = news
-                    self?.tableView.reloadData()
-                    return
-                }
-                
-                print("Some error")
-            }
-        )
+//        newsService.loadVkNewsFeed(
+//            completion: { [weak self] news, error in
+//                guard let _ = error else {
+//                    print(news?.items.count)
+//                    self?.vkNews = news
+//                    self?.tableView.reloadData()
+//                    return
+//                }
+//
+//                print("Some error")
+//            }
+//        )
+        
+        firstly {
+            newsService.loadVkNewsFeedPromise()
+        }
+        .done { [weak self] news in
+            self?.vkNews = news
+            self?.tableView.reloadData()
+        }
+        .catch { error in
+            
+        }
+        //newsService.loadVkNewsFeedPromise().
         
     }
     
