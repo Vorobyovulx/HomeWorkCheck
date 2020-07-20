@@ -44,7 +44,33 @@ class NewsTabViewController: UIViewController {
         .catch { error in
             
         }
-        //newsService.loadVkNewsFeedPromise().
+//        //newsService.loadVkNewsFeedPromise().
+//        
+//        // WHEN
+//        
+//        var result1: Promise<VkNews> = self.newsService.loadVkNewsFeedPromise()
+//        var result2: Promise<VkNews> = self.newsService.loadVkNewsFeedPromise()
+//        
+//        let group = DispatchGroup()
+//
+//        let work1 = DispatchQueue.global().async(group: group) {
+//            result1 = self.newsService.loadVkNewsFeedPromise()
+//        }
+//        
+//        let work2 = DispatchQueue.global().async(group: group) {
+//            result2 = self.newsService.loadVkNewsFeedPromise()
+//        }
+//    
+//        group.notify(queue: .main) {
+//           print("Finish")
+//        }
+//        
+//        firstly {
+//            when(fulfilled: self.newsService.loadVkNewsFeedPromise(), self.newsService.loadVkNewsFeedPromise())
+//        }
+//        .done { result1, result2 in
+//            //…
+//        }
         
     }
     
@@ -54,6 +80,23 @@ class NewsTabViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
     }
+//
+//    func getIcon(named iconName: String) -> Promise<UIImage> {
+//        return Promise<UIImage> {
+//            getFile(named: iconName, completion: $0.resolve)// 1
+//        }
+//            .recover { _ in // 2
+//                self.getIconFromNetwork(named: iconName)
+//        }
+//    }
+//
+//    func getFile(named: String, completion: Result<UIImage?>) {
+//        completion()
+//    }
+//
+//    func getIconFromNetwork(named: String) -> Promise<UIImage> {
+//
+//    }
     
 }
 
